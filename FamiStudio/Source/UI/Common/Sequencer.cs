@@ -580,7 +580,7 @@ namespace FamiStudio
                 var text = (i + 1).ToString();
                 if (Song.PatternHasCustomSettings(i))
                     text += "*";
-                ch.DrawText(text, ThemeResources.FontMedium, 0, barTextPosY, ThemeResources.LightGreyFillBrush1, RenderTextFlags.Center | RenderTextFlags.Clip, sx);
+                ch.DrawText($"[{i}] :: " + text, ThemeResources.FontMedium, 0, barTextPosY, ThemeResources.LightGreyFillBrush1, RenderTextFlags.Center | RenderTextFlags.Clip, sx);
 
                 if (i == Song.LoopPoint)
                     ch.DrawBitmapAtlas(bmpAtlasMisc, (int)MiscImageIndices.LoopPoint, headerIconPosX, headerIconPosY, 1.0f, bitmapScale, Theme.LightGreyFillColor1);
@@ -618,9 +618,17 @@ namespace FamiStudio
 
                 for (int c = 0, py = headerSizeY; c < Song.Channels.Length; c++, py += trackSizeY)
                 {
+                    if ((p == 1 || p == 2) && c == 4)
+                    {
+                        Log.LogMessage(LogSeverity.Info, $"PATTERN {p} CHANNEL {c}");
+                    }
                     var location = new PatternLocation(c, p);
                     var pattern  = Song.GetPatternInstance(location);
 
+                    if ((p == 1 || p == 2) && c == 4)
+                    {
+                        Log.LogMessage(LogSeverity.Info, $"pattern == null? {pattern == null}");
+                    }
                     if (pattern != null)
                     {
                         var bmp = patternCache.GetOrAddPattern(pattern, patternLen, noteLen, out var u0, out var v0, out var u1, out var v1);
@@ -629,7 +637,7 @@ namespace FamiStudio
                         cb.FillRectangle(1, 1, sx, patternHeaderSizeY, g.GetVerticalGradientBrush(pattern.Color, patternHeaderSizeY, 0.8f));
                         cp.DrawLine(0, patternHeaderSizeY, sx, patternHeaderSizeY, ThemeResources.BlackBrush);
                         cp.DrawBitmap(bmp, 1.0f, 1.0f + patternHeaderSizeY, sx - 1, patternCacheSizeY, 1.0f, u0, v0, u1, v1);
-                        cp.DrawText(pattern.Name, ThemeResources.FontSmall, patternNamePosX, 0, ThemeResources.BlackBrush, RenderTextFlags.Left | RenderTextFlags.Middle | RenderTextFlags.Clip, sx - patternNamePosX, patternHeaderSizeY);
+                        cp.DrawText($"[{c}] :: " + pattern.Name, ThemeResources.FontSmall, patternNamePosX, 0, ThemeResources.BlackBrush, RenderTextFlags.Left | RenderTextFlags.Middle | RenderTextFlags.Clip, sx - patternNamePosX, patternHeaderSizeY);
                         if (IsPatternSelected(location))
                             cf.DrawRectangle(0, 0, sx, trackSizeY, selectionPatternBrush, 2, true);
                         cp.PopTransform();
