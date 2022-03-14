@@ -102,6 +102,7 @@ namespace FamiStudio
 
             if (pattern.GetMinMaxNote(out var minNote, out var maxNote))
             {
+                Log.LogMessage(LogSeverity.Info, $"min/max note : {minNote}/{maxNote}");
                 if (maxNote == minNote)
                 {
                     minNote = (byte)(minNote - 5);
@@ -112,6 +113,7 @@ namespace FamiStudio
                     minNote = (byte)(minNote - 2);
                     maxNote = (byte)(maxNote + 2);
                 }
+                Log.LogMessage(LogSeverity.Info, $"min/max note : {minNote}/{maxNote}");
 
                 var musicalNotes = new List<Tuple<int, Note>>();
 
@@ -125,6 +127,7 @@ namespace FamiStudio
                     if (note.IsMusical)
                         musicalNotes.Add(new Tuple<int, Note>(time, note));
                 }
+                Log.LogMessage(LogSeverity.Info, $"musicalNotes.Count : {musicalNotes.Count}");
 
                 var lastScaledTime2 = 0;
 
@@ -134,8 +137,18 @@ namespace FamiStudio
                     var time1 = musicalNotes[i].Item1;
                     var time2 = Math.Min(time1 + note.Duration, i < musicalNotes.Count - 1 ? musicalNotes[i + 1].Item1 : ushort.MaxValue);
 
+                    
                     var scaledTime1 = Math.Max((int)(time1 * scaleX), lastScaledTime2);
                     var scaledTime2 = Math.Min((int)Math.Round(time2 * scaleX), patternCacheSizeX);
+                    
+                    Log.LogMessage(LogSeverity.Info, $"({i}) ===== NOTE ======================");
+                    Log.LogMessage(LogSeverity.Info, $"({i})    duration : {note.Duration}");
+                    Log.LogMessage(LogSeverity.Info, $"({i})        time : < {time1} -> {time2} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i})   time * sX : < {time1 * scaleX} -> {time2 * scaleX} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i}) i time * sX : < {(int)(time1 * scaleX)} -> {(int)(Math.Round(time2 * scaleX))} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i}) scaled time : < {scaledTime1} -> {scaledTime2} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i})        lST2 : {lastScaledTime2}");
+                    Log.LogMessage(LogSeverity.Info, $"({i})        pCSX : {patternCacheSizeX}");
 
                     DrawPatternBitmapNote(project, scaledTime1, scaledTime2, note, patternCacheSizeX, clampedPatternCacheSizeY, noteSizeY, minNote, maxNote, scaleY, pattern.ChannelType == ChannelType.Dpcm, data);
 
