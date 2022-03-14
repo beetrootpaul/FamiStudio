@@ -625,11 +625,7 @@ namespace FamiStudio
                     var location = new PatternLocation(c, p);
                     var pattern  = Song.GetPatternInstance(location);
 
-                    if ((p == 1 || p == 2) && c == 4)
-                    {
-                        Log.LogMessage(LogSeverity.Info, $"pattern == null? {pattern == null}");
-                    }
-                    if (pattern != null)
+                    if (pattern != null && (p == 1 || p == 2) && c == 4)
                     {
                         var bmp = patternCache.GetOrAddPattern(pattern, patternLen, noteLen, out var u0, out var v0, out var u1, out var v1);
 
