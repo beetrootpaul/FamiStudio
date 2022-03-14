@@ -139,13 +139,15 @@ namespace FamiStudio
 
                     
                     var scaledTime1 = Math.Max((int)(time1 * scaleX), lastScaledTime2);
-                    var scaledTime2 = Math.Min((int)Math.Round(time2 * scaleX), patternCacheSizeX);
+                    var scaledTime2 = Math.Min((int)Math.Ceiling(time2 * scaleX), patternCacheSizeX);
                     
                     Log.LogMessage(LogSeverity.Info, $"({i}) ===== NOTE ======================");
                     Log.LogMessage(LogSeverity.Info, $"({i})    duration : {note.Duration}");
                     Log.LogMessage(LogSeverity.Info, $"({i})        time : < {time1} -> {time2} >");
                     Log.LogMessage(LogSeverity.Info, $"({i})   time * sX : < {time1 * scaleX} -> {time2 * scaleX} >");
-                    Log.LogMessage(LogSeverity.Info, $"({i}) i time * sX : < {(int)(time1 * scaleX)} -> {(int)(Math.Round(time2 * scaleX))} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i}) r~time * sX : < {time1 * scaleX} -> {Math.Round(time2 * scaleX)} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i}) r^time * sX : < {time1 * scaleX} -> {Math.Ceiling(time2 * scaleX)} >");
+                    Log.LogMessage(LogSeverity.Info, $"({i}) i time * sX : < {(int)(time1 * scaleX)} -> {(int)(Math.Ceiling(time2 * scaleX))} >");
                     Log.LogMessage(LogSeverity.Info, $"({i}) scaled time : < {scaledTime1} -> {scaledTime2} >");
                     Log.LogMessage(LogSeverity.Info, $"({i})        lST2 : {lastScaledTime2}");
                     Log.LogMessage(LogSeverity.Info, $"({i})        pCSX : {patternCacheSizeX}");
