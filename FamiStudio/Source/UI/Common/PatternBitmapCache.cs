@@ -78,18 +78,19 @@ namespace FamiStudio
         public GLBitmap GetOrAddPattern(Pattern pattern, int patternLen, int framesPerNote, out float u0, out float v0, out float u1, out float v1)
         {
             // Look in cache first.
-            if (patternCache.TryGetValue(pattern.Id, out var list))
-            {
-                foreach (var d in list)
-                {
-                    if (d.patternLen == patternLen && d.framesPerNote == framesPerNote)
-                    {
-                        ComputeUVs(d.rect, out u0, out v0, out u1, out v1);
-                        d.lastUsedFrame = frameIndex;
-                        return cacheTextures[d.textureIdx].bmp;
-                    }
-                }
-            }
+            var list = new List<PatternCacheData>();
+            // if (patternCache.TryGetValue(pattern.Id, out var list))
+            // {
+                // foreach (var d in list)
+                // {
+                    // if (d.patternLen == patternLen && d.framesPerNote == framesPerNote)
+                    // {
+                        // ComputeUVs(d.rect, out u0, out v0, out u1, out v1);
+                        // d.lastUsedFrame = frameIndex;
+                        // return cacheTextures[d.textureIdx].bmp;
+                    // }
+                // }
+            // }
 
             // Rasterize pattern and add to cache.
             var noteSizeY = (int)Math.Max(Math.Ceiling(clampedPatternCacheSizeY * 0.1f), 2);
